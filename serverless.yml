@@ -1,0 +1,25 @@
+service: notification-service
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  stage: dev
+
+plugins:
+  - serverless-offline
+
+functions:
+  connectHandler:
+    handler: websocket.handler
+    events:
+      - websocket:
+          route: $connect
+      - websocket:
+          route: $disconnect
+      # - websocket:
+      #     route: $default
+  api:
+    handler: app.handler
+    events:
+      - httpApi: '*'

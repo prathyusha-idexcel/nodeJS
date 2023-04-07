@@ -1,0 +1,21 @@
+#!/bin/bash
+echo 'Deleting the zip file'
+timestamp=$(date +%s)
+echo ${timestamp}
+zip -r ../${timestamp}.zip *
+cd ..
+echo 'Created new ZIP file'
+aws s3 cp ${timestamp}.zip s3://abl-lambda-artifacts/Dev-Notification-Socket/${timestamp}.zip
+echo "Done s3 upload"
+aws lambda update-function-code --function-name  Dev-Notification-Socket --s3-bucket abl-lambda-artifacts --s3-key Dev-Notification-Socket/${timestamp}.zip
+echo "Updated code to lambda app"
+
+
+ # echo "Running migration"
+ # aws lambda invoke --function-name cync-webhook-migrator --payload '{}' out.json
+
+echo s3://abl-lambda-artifacts/Dev-Notification-Socket/${timestamp}.zip
+
+
+
+
